@@ -7,3 +7,30 @@ tr {
     width: 25%;
     text-align: center;
 }
+
+main {
+    grid-area: main;
+    padding: 10px;
+    display: flex;
+    margin-top: 20%;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 75%;
+    min-height: 80%;
+    background-color: rgba(207, 198, 198, 0.424);
+    border-radius: 25px;
+    box-shadow: 10px 10px 10px rgba(81, 79, 77, 0.908);
+    padding: 4rem;
+    gap: 1.5rem;
+}

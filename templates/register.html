@@ -23,14 +23,16 @@
 
 <br><br>
 
+{% with messages = get_flashed_messages() %}
 {% if messages %}
-{% for message in get_flashed_messages() %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {% for message in get_flashed_messages() %}
     <h3>{{ message }}</h3>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {% endfor %}
 </div>
-{% endfor %}
 {% endif %}
+{% endwith %}
 <hr>
 {% if registered_users %}
 <div class="table-responsive-sm">

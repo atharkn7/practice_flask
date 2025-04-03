@@ -59,7 +59,7 @@ def register():
         return redirect('/register')
       
     # Showing table incase of GET
-    registered_users = db.session.execute(db.select(Users).order_by(Users.name)).scalars().all()
+    registered_users = db.session.execute(db.select(Users).order_by(Users.id)).scalars().all()
 
     # Formatting date 
     for registered in registered_users:
