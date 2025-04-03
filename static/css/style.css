@@ -1,0 +1,9 @@
+table {
+    justify-self: center;
+}
+
+th,
+tr {
+    width: 25%;
+    text-align: center;
+}

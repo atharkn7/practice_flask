@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+
+{% block main %}
+<form action="{{ url_for('register') }}" method="post">
+
+    {{ form.hidden_tag() }} <br>
+
+    {{form.name(class="form-control", placeholder="Name")}} <br>
+    {{form.email(class="form-control", placeholder="Email", type="email")}} <br>
+    <!-- Email Validators-->
+    {% if form.email.errors %}
+    <div class="alert alert-warning alert-dismissible fade show">
+        {% for error in form.email.errors %}
+        {{ error }}
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {{form.submit(class="btn btn-secondary")}}
+
+</form>
+
+<br><br>
+
+{% if messages %}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <h3>{{ message }}</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+<hr>
+{% if registered_users %}
+<div class="table-responsive-sm">
+    <table class="table table-striped table-hover caption-top" style="width: 85%;">
+        <caption>List of users</caption>
+        <thead>
+            <tr class="table-dark">
+                <th style="width: 10%">ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Joining Date</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for user in registered_users %}
+            <tr>
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.date_added}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+{% endblock %}
