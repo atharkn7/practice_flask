@@ -7,6 +7,9 @@ from wtforms import StringField, EmailField, SubmitField
 from wtforms.validators import DataRequired, Email
 from datetime import datetime
 
+# Importing helpers
+from helpers import format_date
+
 # Configure app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretkey' #wtforms CSRF Token
@@ -41,8 +44,8 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        name = form.name.data
-        email = form.email.data
+        name = form.name.data.strip()
+        email = form.email.data.strip()
 
         # Add to db
         user = Users.query.filter_by(email=email).first()
@@ -62,11 +65,48 @@ def register():
     registered_users = db.session.execute(db.select(Users).order_by(Users.id)).scalars().all()
 
     # Formatting date 
-    for registered in registered_users:
-        registered.date_added = registered.date_added.strftime("%Y.%m.%d")
+    format_date(registered_users)
 
     return render_template('register.html', form=form, registered_users=registered_users)
 
+
+# All registered users route
+@app.route('/users')
+def users():
+    # Querying for all users
+    registered_users = db.session.execute(db.select(Users).order_by(Users.id)).scalars().all()
+    # Formatting date 
+    format_date(registered_users)
+
+    return render_template('users.html', registered_users=registered_users)
+
+# Update selected user
+@app.route("/update/<user_id>", methods=["GET", "POST"])
+def update(user_id):
+    # Form object to create a form
+    form = RegisterForm()
+
+    # Querying db for selected user_id
+    user = db.get_or_404(Users, user_id)
+
+    if request.method == "POST":
+        # Updating user
+        if form.validate_on_submit():
+            # Updating values
+            user.name = form.name.data.strip()
+            user.email = form.email.data.strip()
+            # Updating db
+            db.session.commit()
+
+        # Deleting user
+        delete = request.form.get('delete')
+        if delete:
+            db.session.delete(user)
+            db.session.commit()
+
+        return redirect("/users")
+
+    return render_template('update.html', user=user, form=form)
 
 # Error handling routes
 @app.errorhandler(404)

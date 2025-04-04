@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+
+{% block main %}
+
+<form action="{{url_for('update', user_id=user.id)}}" method="post">
+
+    {{ form.hidden_tag() }} <br>
+
+    {{ form.name(class="form-control", value=user.name|title) }} <br>
+    {{ form.email(class="form-control", value=user.email) }} <br>
+    <!-- Email Validators-->
+    {% if form.email.errors %}
+    <div class="alert alert-warning alert-dismissible fade show">
+        {% for error in form.email.errors %}
+        {{ error }}
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {{ form.submit(class="btn btn-secondary", value="Update") }}
+
+</form>
+
+<hr>
+<form action=" {{ url_for('update', user_id=user.id)}} " method="post">
+    <input type="hidden" name="delete" value="delete">
+    <input class="btn btn-outline-danger" type="submit" value="Delete">
+</form>
+{% endblock %}
